@@ -15,7 +15,8 @@
   <div id='app' class="container py-5">
     <div class="row">
       <div class="card-deck">
-        <food-card v-for='food in foods' :title='food.title' :text='food.text' :img='food.img' @add-bucket='addBucket'>
+        <food-card v-for='food in foods' :title='food.title' :text='food.text' :img='food.img' :index='food.i'
+          @add-bucket='addBucket'>
         </food-card>
       </div>
     </div>
@@ -34,7 +35,7 @@
   </div>
   <script>
     Vue.component('foodCard', {
-      props: ['title', 'text', 'img'],
+      props: ['title', 'text', 'img', 'index'],
       template: `<div class="col-md-4 card mb-3 px-0">
         <img class="card-img-top" :src="img" alt="Card image cap">
           <div class="card-body">
@@ -46,7 +47,7 @@
         </div>`,
       methods: {
         addBucket() {
-          this.$emit('add-bucket', event)
+          this.$emit('add-bucket', this.index)
         }
       }
     })
@@ -61,6 +62,7 @@
       data: {
         foods: [
           {
+            i: 0,
             title: '커피커피',
             text: '커피 또는 커피차는 커피나무의 씨를 볶아 가루로 낸 것을 따뜻한 물과 차가운물 또는 증기로 우려내어 마시는 쓴맛이 나는 음료이다.',
             img: './assets/images/coffee.jpg',
@@ -68,6 +70,7 @@
             show: false
           },
           {
+            i: 1,
             title: '베리베리',
             text: '과일은 나무나 초본 식물에 달리는, 먹을 수 있는 열매를 가리킨다. 일반적으로 열매 부분은 버리고 씨만을 식용하는 호두는 과일로 치지 않는다.',
             img: './assets/images/fruit.jpg',
@@ -75,6 +78,7 @@
             show: false
           },
           {
+            i: 2,
             title: '고기고기',
             text: '고기는 동물의 살점, 특히 인간이 먹는 동물의 살을 이르는 말이다. 육류, 식육이라고도 한다. 맛있다.',
             img: './assets/images/meat.jpg',
@@ -84,18 +88,9 @@
         ]
       },
       methods: {
-        addBucket(event) {
-          if (event.target.id === '커피커피') {
-            this.foods[0].total += 1
-            this.foods[0].show = true
-          } else if (event.target.id === '베리베리') {
-            this.foods[1].total += 1
-            this.foods[1].show = true
-          } else {
-            this.foods[2].total += 1
-            this.foods[2].show = true
-          }
-          console.log(this.foods)
+        addBucket(i) {
+          this.foods[i].total += 1
+          this.foods[i].show = true
         },
 
         clearBucket() {
